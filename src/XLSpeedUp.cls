@@ -50,19 +50,20 @@ Private m_Count                 As Integer
 ''' Returns a string describing the class.
 '''
 Public Property Get About() As String
-
+    
     About = "ChE Junkie VBA SpeedUp class module for Excel, " & Me.Version & "." & VBA.vbCrLf & VBA.vbCrLf
     About = About & "For additional details see  https://chejunkie.com/knowledge-base/speed-up-class-excel-vba/"
     
 End Property
 
+
 '''
 ''' Displays current Excel/Application settings.
 '''
 Public Sub DisplayApplicationSettings()
-
-Dim msg As String
-
+    
+    Dim msg As String
+    
     Select Case Application.Calculation
         Case XlCalculation.xlCalculationAutomatic:      msg = " (Automatic)"
         Case XlCalculation.xlCalculationManual:         msg = " (Manual)"
@@ -73,16 +74,17 @@ Dim msg As String
             "ScreenUpdate:= " & Application.ScreenUpdating & VBA.vbCrLf & _
             "EnableEvents:= " & Application.EnableEvents & VBA.vbCrLf & _
             "DisplayAlerts:= " & Application.DisplayAlerts & VBA.vbCrLf
-                    
+    
     MsgBox msg, vbInformation, "SpeedUp | Current Application Settings"
     
 End Sub
+
 
 '''
 ''' Displays current SpeedUp/Excel settings.
 '''
 Public Sub DisplayCurrentSettings()
-
+    
     VBA.MsgBox Me.ToString(returnAsSingleLine:=False), vbInformation + vbOKOnly, "SpeedUp | Current Settings"
     
 End Sub
@@ -92,38 +94,40 @@ End Sub
 ''' Returns the name of the class.
 '''
 Public Property Get Name() As String
-
+    
     Name = C_NAME
     
 End Property
+
+
 '''
 ''' Returns version information for the class.
 '''
 Public Property Get Version() As String
-
-' Contains a list of (historical) changes to the class within the comments of the procedure.
-'--------------------------------------------------------------------------------------------------------------------------
-    Version = "Version 1.0 (2018)"  ' Initial (official) release.
-                                    
+    
+    ' Contains a list of (historical) changes to the class within the comments of the procedure.
+    '--------------------------------------------------------------------------------------------------------------------------
+    Version = "Version 1.0 (2018)"                ' Initial (official) release.
+    
 End Property
-
 
 
 '''
 ''' Indicates run mode i.e. speed on/off.
 '''
 Property Get IsRunning() As Boolean
-
+    
     IsRunning = m_IsRunning
     
 End Property
+
 
 '''
 ''' Turns on/off common Excel application settings to speed-up code execution,
 '''  with optional [statusBarMessage] and switch to [allowEvents] if necessary.
 '''
 Sub TurnOn(Optional statusBarMessage As String, Optional allowEvents As Boolean = False)
-
+    
     If (statusBarMessage = vbNullString) Then
         statusBarMessage = "SpeedUp is on."
     End If
@@ -156,13 +160,14 @@ Sub TurnOn(Optional statusBarMessage As String, Optional allowEvents As Boolean 
     
 End Sub
 
+
 '''
 ''' Resets the 'SpeedUp' switches to their original state.
 '''
 Sub TurnOff()
-
+    
     Select Case m_Count
-        Case 1 ' restore original values/settings.
+        Case 1                                     ' restore original values/settings.
             m_Count = 0
             m_IsRunning = False
             With Application
@@ -174,7 +179,7 @@ Sub TurnOff()
                 .StatusBar = False
                 .EnableCancelKey = xlInterrupt
             End With
-        Case Is > 1 ' peal-off one layer.
+        Case Is > 1                                ' peal-off one layer.
             m_Count = m_Count - 1
             ReDim Preserve m_EnableEvents(m_Count)
             Application.EnableEvents = m_EnableEvents(m_Count)
@@ -187,7 +192,7 @@ End Sub
 ''' Indicates the number of active run modes.
 '''
 Property Get Count() As Integer
-
+    
     Count = m_Count
     
 End Property
@@ -198,7 +203,7 @@ End Property
 ''' Required if user terminates VBA code exection before TurnOff method is called.
 '''
 Sub Reset()
-
+    
     With Application
         m_Count = 0
         m_IsRunning = False
@@ -213,11 +218,13 @@ Sub Reset()
     End With
     
 End Sub
+
+
 '''
 ''' Returns a string continaing a list of current settings.
 '''
 Property Get ToString(Optional returnAsSingleLine As Boolean = True) As String
-
+    
     Select Case Application.Calculation
         Case XlCalculation.xlCalculationAutomatic:      ToString = " (Automatic)"
         Case XlCalculation.xlCalculationManual:         ToString = " (Manual)"
@@ -233,19 +240,13 @@ Property Get ToString(Optional returnAsSingleLine As Boolean = True) As String
     If returnAsSingleLine Then
         ToString = VBA.Replace(ToString, VBA.vbCrLf, ", ")
     End If
-                    
+    
 End Property
 
 
-
-
-
-
 Private Sub Class_Initialize()
-'//// Class constructor.
-'--------------------------------------------------------------------------------------------------------------------------
-    Debug.Print "|> Initializing:= " & Me.Name
+    '//// Class constructor.
+    '--------------------------------------------------------------------------------------------------------------------------
+Debug.Print "|> Initializing:= " & Me.Name
     
 End Sub
-
-
