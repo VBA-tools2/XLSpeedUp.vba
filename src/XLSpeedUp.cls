@@ -8,6 +8,8 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 
+'@Exposed
+
 Option Explicit
 '
 ' SpeedUp Class for Excel
