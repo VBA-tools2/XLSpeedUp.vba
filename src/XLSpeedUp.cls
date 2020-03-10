@@ -36,20 +36,23 @@ Option Explicit
 '==========================================================================================================================
 ' Application Constants
 '==========================================================================================================================
-Private Const C_NAME        As String = "XLSpeedUp.cls"
+Private Const C_NAME    As String = "XLSpeedUp.cls"
 
 '==========================================================================================================================
 ' Private Variables
 '==========================================================================================================================
-Private m_CalculationMode       As Excel.XlCalculation
-Private m_ScreenUpdate          As Boolean
-Private m_EnableEvents()        As Boolean
-Private m_DisplayAlerts         As Boolean
-Private m_EnableAnimations      As Boolean
-Private m_StatusBar             As Boolean
-Private m_IsRunning             As Boolean
-Private m_Count                 As Integer
-Private m_Silent                As Boolean
+Private Type TXLSpeedUp
+    CalculationMode     As Excel.XlCalculation
+    ScreenUpdate        As Boolean
+    EnableEvents()      As Boolean
+    DisplayAlerts       As Boolean
+    EnableAnimations    As Boolean
+    StatusBar           As Boolean
+    IsRunning           As Boolean
+    Count               As LongPtr
+    Silent              As Boolean
+End Type
+Private This As TXLSpeedUp
 
 
 'Returns a string describing the class.
@@ -106,10 +109,10 @@ End Property
 
 
 Public Property Get Silent() As Boolean
-    Silent = m_Silent
+    Silent = This.Silent
 End Property
 Public Property Let Silent(Value As Boolean)
-    m_Silent = Value
+    This.Silent = Value
 End Property
 
 
@@ -125,7 +128,7 @@ End Property
 
 'Indicates run mode i.e. speed on/off.
 Property Get IsRunning() As Boolean
-    IsRunning = m_IsRunning
+    IsRunning = This.IsRunning
 End Property
 
 
@@ -145,22 +148,24 @@ Sub TurnOn( _
         Message = statusBarMessage
     End If
     
-    If m_IsRunning Then
-        'Update counter so that 'TurnOff' knows when to reset switches back to normal.
-        m_Count = m_Count + 1
-        ReDim Preserve m_EnableEvents(m_Count)
-        m_EnableEvents(m_Count) = allowEvents
+    If This.IsRunning Then
+        With This
+            'Update counter so that 'TurnOff' knows when to reset switches back to normal.
+            .Count = .Count + 1
+            ReDim Preserve .EnableEvents(.Count)
+            .EnableEvents(.Count) = allowEvents
+        End With
     Else
         'First call.
         'Store current settings in class holders before making changes.
         With Application
-            m_Count = 1
-            m_CalculationMode = .Calculation
-            m_ScreenUpdate = .ScreenUpdating
-            ReDim m_EnableEvents(m_Count)
-            m_EnableEvents(m_Count) = .EnableEvents
-            m_DisplayAlerts = .DisplayAlerts
-            m_EnableAnimations = .EnableAnimations
+            This.Count = 1
+            This.CalculationMode = .Calculation
+            This.ScreenUpdate = .ScreenUpdating
+            ReDim This.EnableEvents(This.Count)
+            This.EnableEvents(This.Count) = .EnableEvents
+            This.DisplayAlerts = .DisplayAlerts
+            This.EnableAnimations = .EnableAnimations
             
             HideDisplayPageBreaksOnAllSheets hideDisplayPageBreaks
             
@@ -173,7 +178,7 @@ Sub TurnOn( _
             SetStatusBar Message
             .EnableCancelKey = XlEnableCancelKey.xlErrorHandler
         End With
-        m_IsRunning = True
+        This.IsRunning = True
     End If
     
 End Sub
@@ -181,26 +186,26 @@ End Sub
 
 'Resets the 'SpeedUp' switches to their original state.
 Sub TurnOff()
-    Select Case m_Count
+    Select Case This.Count
         Case 1                                     ' restore original values/settings.
-            m_Count = 0
-            m_IsRunning = False
+            This.Count = 0
+            This.IsRunning = False
             With Application
-                .Calculation = m_CalculationMode
-                .ScreenUpdating = m_ScreenUpdate
-                .EnableEvents = m_EnableEvents(1)
-                .DisplayAlerts = m_DisplayAlerts
-                .EnableAnimations = m_EnableAnimations
+                .Calculation = This.CalculationMode
+                .ScreenUpdating = This.ScreenUpdate
+                .EnableEvents = This.EnableEvents(1)
+                .DisplayAlerts = This.DisplayAlerts
+                .EnableAnimations = This.EnableAnimations
                 .Cursor = xlDefault
-                If m_StatusBar = False Then
+                If This.StatusBar = False Then
                     .StatusBar = False
                 End If
                 .EnableCancelKey = xlInterrupt
             End With
         Case Is > 1                                ' peal-off one layer.
-            m_Count = m_Count - 1
-            ReDim Preserve m_EnableEvents(m_Count)
-            Application.EnableEvents = m_EnableEvents(m_Count)
+            This.Count = This.Count - 1
+            ReDim Preserve This.EnableEvents(This.Count)
+            Application.EnableEvents = This.EnableEvents(This.Count)
     End Select
     
 End Sub
@@ -208,7 +213,7 @@ End Sub
 
 'Indicates the number of active run modes.
 Property Get Count() As Integer
-    Count = m_Count
+    Count = This.Count
 End Property
 
 
@@ -216,8 +221,8 @@ End Property
 'Required if user terminates VBA code execution before TurnOff method is called.
 Sub Reset()
     With Application
-        m_Count = 0
-        m_IsRunning = False
+        This.Count = 0
+        This.IsRunning = False
         .Calculation = Excel.XlCalculation.xlCalculationAutomatic
         .ScreenUpdating = True
         .EnableEvents = True
@@ -247,8 +252,8 @@ Property Get ToString( _
     
     With Application
         ToString = _
-                "IsRunning:= " & m_IsRunning & VBA.vbCrLf & _
-                "Count:= " & m_Count & VBA.vbCrLf & _
+                "IsRunning:= " & This.IsRunning & VBA.vbCrLf & _
+                "Count:= " & This.Count & VBA.vbCrLf & _
                 "CalculationMode:= " & .Calculation & ToString & VBA.vbCrLf & _
                 "ScreenUpdate:= " & .ScreenUpdating & VBA.vbCrLf & _
                 "EnableEvents(" & Me.Count & "):= " & .EnableEvents & VBA.vbCrLf & _
@@ -266,7 +271,7 @@ End Property
 Private Sub Class_Initialize()
     '//// Class constructor.
     '--------------------------------------------------------------------------------------------------------------------------
-    m_Silent = True
+    This.Silent = True
     
     ShowMessage "|> Initializing:= " & Me.Name
 End Sub
@@ -276,10 +281,10 @@ Private Sub SetStatusBar(ByVal Message As String)
     With Application
         'only change StatusBar text when there is none
         If .StatusBar = False Then
-            m_StatusBar = False
+            This.StatusBar = False
             .StatusBar = Message
         Else
-            m_StatusBar = True
+            This.StatusBar = True
         End If
     End With
 End Sub
@@ -298,7 +303,7 @@ End Sub
 
 
 Private Sub ShowMessage(ByVal Msg As String)
-    If m_Silent = False Then
+    If This.Silent = False Then
         Debug.Print Msg
     End If
 End Sub
