@@ -28,6 +28,7 @@ Option Explicit
 '   |> Get | --- IsRunning                  :: Indicates run mode i.e. speed on/off.
 '   |> Get | --- Name                       :: Returns the name of the class defined by constant 'C_NAME'.
 '   |> --------- Reset                      :: Resets application settings to their default values.
+'   |> Get | Let Silent                     :: Suppresses messages if set to TRUE
 '   |> --------- ToString                   :: Returns a string containing a list of current settings.
 '   |> --------- TurnOff                    :: Resets the 'SpeedUp' switches to their original state.
 '   |> --------- TurnOn                     :: Turns on/off common Excel application settings to speed-up code execution.
@@ -43,14 +44,14 @@ Private Const C_NAME    As String = "XLSpeedUp.cls"
 '==========================================================================================================================
 Private Type TXLSpeedUp
     CalculationMode     As Excel.XlCalculation
-    ScreenUpdate        As Boolean
-    EnableEvents()      As Boolean
+    Count               As Byte
     DisplayAlerts       As Boolean
     EnableAnimations    As Boolean
-    StatusBar           As Boolean
+    EnableEvents()      As Boolean
     IsRunning           As Boolean
-    Count               As LongPtr
+    ScreenUpdate        As Boolean
     Silent              As Boolean
+    StatusBar           As Boolean
 End Type
 Private This As TXLSpeedUp
 
@@ -111,6 +112,7 @@ End Property
 Public Property Get Silent() As Boolean
     Silent = This.Silent
 End Property
+
 Public Property Let Silent(Value As Boolean)
     This.Silent = Value
 End Property
@@ -212,7 +214,7 @@ End Sub
 
 
 'Indicates the number of active run modes.
-Property Get Count() As Integer
+Property Get Count() As Byte
     Count = This.Count
 End Property
 
@@ -303,7 +305,7 @@ End Sub
 
 
 Private Sub ShowMessage(ByVal Msg As String)
-    If This.Silent = False Then
+    If Not This.Silent Then
         Debug.Print Msg
     End If
 End Sub
