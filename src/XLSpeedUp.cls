@@ -21,18 +21,18 @@ Option Explicit
 '==========================================================================================================================
 ' Accessible in this class: (For additional details see https://chejunkie.com/knowledge-base/speed-up-class-excel-vba/)
 '==========================================================================================================================
-'   |> Get | --- About                      :: String that describes the current class.
-'   |> Get | --- Count                      :: Indicates the number of active run modes.
-'   |> --------- DisplayApplicationSettings :: Displays current Excel/Application settings.
-'   |> --------- DisplaySettings            :: Displays current SpeedUp/Excel settings.
-'   |> Get | --- IsRunning                  :: Indicates run mode i.e. speed on/off.
-'   |> Get | --- Name                       :: Returns the name of the class defined by constant 'C_NAME'.
-'   |> --------- Reset                      :: Resets application settings to their default values.
-'   |> Get | Let Silent                     :: Suppresses messages if set to TRUE
-'   |> --------- ToString                   :: Returns a string containing a list of current settings.
-'   |> --------- TurnOff                    :: Resets the 'SpeedUp' switches to their original state.
-'   |> --------- TurnOn                     :: Turns on/off common Excel application settings to speed-up code execution.
-'   |> Get | --- Version                    :: Returns version string for the class [e.g. #.# (year)].
+'   |> Get | --- About                          :: String that describes the current class.
+'   |> Get | --- Count                          :: Indicates the number of active run modes.
+'   |> --------- DisplayApplicationSettings     :: Displays current Excel/Application settings.
+'   |> --------- DisplaySettings                :: Displays current SpeedUp/Excel settings.
+'   |> Get | --- IsRunning                      :: Indicates run mode i.e. speed on/off.
+'   |> Get | --- Name                           :: Returns the name of the class defined by constant 'C_NAME'.
+'   |> --------- Reset                          :: Resets application settings to their default values.
+'   |> Get | Let Silent                         :: Suppresses messages if set to TRUE
+'   |> --------- ToString                       :: Returns a string containing a list of current settings.
+'   |> --------- TurnOff                        :: Resets the 'SpeedUp' switches to their original state.
+'   |> --------- TurnOn                         :: Turns on/off common Excel application settings to speed-up code execution.
+'   |> Get | --- Version                        :: Returns version string for the class [e.g. #.# (year)].
 
 '==========================================================================================================================
 ' Application Constants
@@ -122,8 +122,12 @@ End Property
 Public Property Get Version() As String
     
     'Contains a list of (historical) changes to the class within the comments of the procedure.
-    '--------------------------------------------------------------------------------------------------------------------------
-    Version = "Version 1.0 (2018)"                'Initial (official) release.
+    '-----------------------------------------------------------------------------------------------------
+    'Version = "Version 1.0 (2018)"  ' Initial (official) release.
+    Version = "Version 2.0 (2020)"  ' Thank you Stefan Pinnow for sharing!
+                                    ' |> Remove some typos
+                                    ' |> Remove some unnecessary code
+                                    ' |> Add some more (small) features like e.g. disabling animations.
     
 End Property
 
@@ -188,8 +192,9 @@ End Sub
 
 'Resets the 'SpeedUp' switches to their original state.
 Sub TurnOff()
+    
     Select Case This.Count
-        Case 1                                     ' restore original values/settings.
+        Case 1                                               ' restore original values/settings.
             This.Count = 0
             This.IsRunning = False
             With Application
@@ -204,7 +209,7 @@ Sub TurnOff()
                 End If
                 .EnableCancelKey = xlInterrupt
             End With
-        Case Is > 1                                ' peal-off one layer.
+        Case Is > 1                                          ' peal-off one layer.
             This.Count = This.Count - 1
             ReDim Preserve This.EnableEvents(This.Count)
             Application.EnableEvents = This.EnableEvents(This.Count)
@@ -272,7 +277,7 @@ End Property
 
 Private Sub Class_Initialize()
     '//// Class constructor.
-    '--------------------------------------------------------------------------------------------------------------------------
+    '---------------------------------------------------------------------------
     This.Silent = True
     
     ShowMessage "|> Initializing:= " & Me.Name
