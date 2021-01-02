@@ -122,7 +122,7 @@ End Property
 Public Property Get Version() As String
     
     'Contains a list of (historical) changes to the class within the comments of the procedure.
-    '-----------------------------------------------------------------------------------------------------
+    '----------------------------------------------------------------------------------------------------
     'Version = "Version 1.0 (2018)"  ' Initial (official) release.
     Version = "Version 2.0 (2020)"  ' Thank you Stefan Pinnow for sharing!
                                     ' |> Remove some typos
@@ -277,7 +277,7 @@ End Property
 
 Private Sub Class_Initialize()
     '//// Class constructor.
-    '---------------------------------------------------------------------------
+    '--------------------------------------------------------------------------
     This.Silent = True
     
     ShowMessage "|> Initializing:= " & Me.Name
