@@ -113,7 +113,7 @@ Public Property Get Silent() As Boolean
     Silent = This.Silent
 End Property
 
-Public Property Let Silent(Value As Boolean)
+Public Property Let Silent(ByVal Value As Boolean)
     This.Silent = Value
 End Property
 
@@ -245,7 +245,7 @@ End Sub
 
 'Returns a string containing a list of current settings.
 Public Property Get ToString( _
-    Optional returnAsSingleLine As Boolean = True _
+    Optional ByVal returnAsSingleLine As Boolean = True _
 ) As String
     
     Select Case Application.Calculation
