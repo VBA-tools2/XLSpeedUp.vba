@@ -7,8 +7,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+Attribute VB_Description = "A class to speed up macro execution."
 
 '@Exposed
+'@Folder("XLSpeedUp")
+'@ModuleDescription("A class to speed up macro execution.")
 
 Option Explicit
 '
@@ -56,7 +59,7 @@ End Type
 Private This As TXLSpeedUp
 
 
-'Returns a string describing the class.
+'@Description("Returns a string describing the class.")
 Public Property Get About() As String
     
     About = "ChE Junkie VBA SpeedUp class module for Excel, " & Me.Version & _
@@ -67,7 +70,7 @@ Public Property Get About() As String
 End Property
 
 
-'Displays current Excel/Application settings.
+'@Description("Displays current Excel/Application settings.")
 Public Sub DisplayApplicationSettings()
     
     Dim Message As String
@@ -94,7 +97,7 @@ Public Sub DisplayApplicationSettings()
 End Sub
 
 
-'Displays current SpeedUp/Excel settings.
+'@Description("Displays current SpeedUp/Excel settings.")
 Public Sub DisplayCurrentSettings()
     VBA.MsgBox _
             Me.ToString(returnAsSingleLine:=False), _
@@ -103,22 +106,24 @@ Public Sub DisplayCurrentSettings()
 End Sub
 
 
-'Returns the name of the class.
+'@Description("Returns the name of the class.")
 Public Property Get Name() As String
     Name = C_NAME
 End Property
 
 
+'@Description("Returns if messages are shown or not.")
 Public Property Get Silent() As Boolean
     Silent = This.Silent
 End Property
 
+'@Description("Sets if messages are shown or not.")
 Public Property Let Silent(ByVal Value As Boolean)
     This.Silent = Value
 End Property
 
 
-'Returns version information for the class.
+'@Description("Returns version information for the class.")
 Public Property Get Version() As String
     
     'Contains a list of (historical) changes to the class within the comments of the procedure.
@@ -132,13 +137,14 @@ Public Property Get Version() As String
 End Property
 
 
-'Indicates run mode i.e. speed on/off.
+'@Description("Indicates run mode, i.e. speed on/off.")
 Public Property Get IsRunning() As Boolean
     IsRunning = This.IsRunning
 End Property
 
 
-'Turns on/off common Excel application settings to speed-up code execution,
+'@Description("Turns on 'SpeedUp' switches.")
+'Turns on/off common Excel application settings to speed up code execution,
 'with optional switches to [hideDisplayPageBreaks] and [allowEvents], and
 'to set a [statusBarMessage] if necessary.
 Public Sub TurnOn( _
@@ -190,7 +196,7 @@ Public Sub TurnOn( _
 End Sub
 
 
-'Resets the 'SpeedUp' switches to their original state.
+'@Description("Resets the 'SpeedUp' switches to their original state.")
 Public Sub TurnOff()
     
     Select Case This.Count
@@ -218,13 +224,13 @@ Public Sub TurnOff()
 End Sub
 
 
-'Indicates the number of active run modes.
+'@Description("Indicates the number of active run modes.")
 Public Property Get Count() As Byte
     Count = This.Count
 End Property
 
 
-'Resets application settings to their default values.
+'@Description("Resets application settings to their default values.")
 'Required if user terminates VBA code execution before TurnOff method is called.
 Public Sub Reset()
     With Application
@@ -243,7 +249,7 @@ Public Sub Reset()
 End Sub
 
 
-'Returns a string containing a list of current settings.
+'@Description("Returns a string containing a list of current settings.")
 Public Property Get ToString( _
     Optional ByVal returnAsSingleLine As Boolean = True _
 ) As String
@@ -275,15 +281,14 @@ Public Property Get ToString( _
 End Property
 
 
+'@Description("Class constructor.")
 Private Sub Class_Initialize()
-    '//// Class constructor.
-    '--------------------------------------------------------------------------
     This.Silent = True
-    
     ShowMessage "|> Initializing:= " & Me.Name
 End Sub
 
 
+'@Description("Eventually sets a StatusBar message.")
 Private Sub SetStatusBar(ByVal Message As String)
     With Application
         'only change StatusBar text when there is none
@@ -297,6 +302,7 @@ Private Sub SetStatusBar(ByVal Message As String)
 End Sub
 
 
+'@Description("Eventually hide page breaks on all sheets.")
 Private Sub HideDisplayPageBreaksOnAllSheets( _
     ByVal hideDisplayPageBreaks As Boolean _
 )
@@ -309,6 +315,7 @@ Private Sub HideDisplayPageBreaksOnAllSheets( _
 End Sub
 
 
+'@Description("Eventually show messages.")
 Private Sub ShowMessage(ByVal Message As String)
     If Not This.Silent Then
         Debug.Print Message
