@@ -133,7 +133,7 @@ End Property
 
 
 'Indicates run mode i.e. speed on/off.
-Property Get IsRunning() As Boolean
+Public Property Get IsRunning() As Boolean
     IsRunning = This.IsRunning
 End Property
 
@@ -141,7 +141,7 @@ End Property
 'Turns on/off common Excel application settings to speed-up code execution,
 'with optional switches to [hideDisplayPageBreaks] and [allowEvents], and
 'to set a [statusBarMessage] if necessary.
-Sub TurnOn( _
+Public Sub TurnOn( _
     Optional ByVal hideDisplayPageBreaks As Boolean = True, _
     Optional ByVal allowEvents As Boolean = False, _
     Optional ByVal statusBarMessage As String = vbNullString _
@@ -191,7 +191,7 @@ End Sub
 
 
 'Resets the 'SpeedUp' switches to their original state.
-Sub TurnOff()
+Public Sub TurnOff()
     
     Select Case This.Count
         Case 1                                               ' restore original values/settings.
@@ -219,14 +219,14 @@ End Sub
 
 
 'Indicates the number of active run modes.
-Property Get Count() As Byte
+Public Property Get Count() As Byte
     Count = This.Count
 End Property
 
 
 'Resets application settings to their default values.
 'Required if user terminates VBA code execution before TurnOff method is called.
-Sub Reset()
+Public Sub Reset()
     With Application
         This.Count = 0
         This.IsRunning = False
@@ -244,7 +244,7 @@ End Sub
 
 
 'Returns a string containing a list of current settings.
-Property Get ToString( _
+Public Property Get ToString( _
     Optional returnAsSingleLine As Boolean = True _
 ) As String
     
