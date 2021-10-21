@@ -70,26 +70,26 @@ End Property
 'Displays current Excel/Application settings.
 Public Sub DisplayApplicationSettings()
     
-    Dim Msg As String
+    Dim Message As String
     
     Select Case Application.Calculation
         Case XlCalculation.xlCalculationAutomatic
-            Msg = " (Automatic)"
+            Message = " (Automatic)"
         Case XlCalculation.xlCalculationManual
-            Msg = " (Manual)"
+            Message = " (Manual)"
         Case XlCalculation.xlCalculationSemiautomatic
-            Msg = " (Semi-Automatic)"
+            Message = " (Semi-Automatic)"
     End Select
     
     With Application
-        Msg = "CalculationMode:= " & .Calculation & Msg & VBA.vbCrLf & _
+        Message = "CalculationMode:= " & .Calculation & Message & VBA.vbCrLf & _
                 "ScreenUpdate:= " & .ScreenUpdating & VBA.vbCrLf & _
                 "EnableEvents:= " & .EnableEvents & VBA.vbCrLf & _
                 "DisplayAlerts:= " & .DisplayAlerts & VBA.vbCrLf & _
                 "EnableAnimations:= " & .EnableAnimations
     End With
     
-    MsgBox Msg, vbInformation, "SpeedUp | Current Application Settings"
+    MsgBox Message, vbInformation, "SpeedUp | Current Application Settings"
     
 End Sub
 
@@ -309,8 +309,8 @@ Private Sub HideDisplayPageBreaksOnAllSheets( _
 End Sub
 
 
-Private Sub ShowMessage(ByVal Msg As String)
+Private Sub ShowMessage(ByVal Message As String)
     If Not This.Silent Then
-        Debug.Print Msg
+        Debug.Print Message
     End If
 End Sub
