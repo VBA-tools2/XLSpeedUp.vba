@@ -209,10 +209,12 @@ Public Sub TurnOff()
                 .EnableEvents = This.EnableEvents(1)
                 .DisplayAlerts = This.DisplayAlerts
                 .EnableAnimations = This.EnableAnimations
+'NOTE: Is it intentionally not restored?
                 .Cursor = xlDefault
                 If This.StatusBar = False Then
                     .StatusBar = False
                 End If
+'NOTE: Is it intentionally not restored?
                 .EnableCancelKey = xlInterrupt
             End With
         Case Is > 1                                          ' peal-off one layer.
