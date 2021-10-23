@@ -156,7 +156,7 @@ Public Sub TurnOn( _
     If Len(statusBarMessage) = 0 Then
         Dim Message As String
         Message = "SpeedUp is on."
-    ElseIf TypeName(statusBarMessage) = "String" Then
+    Else
         Message = statusBarMessage
     End If
     
@@ -178,6 +178,7 @@ Public Sub TurnOn( _
             This.EnableEvents(This.Count) = .EnableEvents
             This.DisplayAlerts = .DisplayAlerts
             This.EnableAnimations = .EnableAnimations
+'NOTE: The current state of `.Cursor` and `.EnableCancelKey` are not stored. Is that intended?
             
             HideDisplayPageBreaksOnAllSheets hideDisplayPageBreaks
             
@@ -243,6 +244,7 @@ Public Sub Reset()
         .EnableEvents = True
         .DisplayAlerts = True
         .EnableAnimations = True
+'NOTE: This key is not used anywhere else
         .CalculateBeforeSave = True
         .Cursor = Excel.XlMousePointer.xlDefault
         .StatusBar = False
