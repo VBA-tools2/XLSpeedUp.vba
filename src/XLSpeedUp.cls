@@ -166,6 +166,7 @@ Public Sub TurnOn( _
             .Count = .Count + 1
             ReDim Preserve .EnableEvents(.Count)
             .EnableEvents(.Count) = allowEvents
+            Application.EnableEvents = allowEvents
         End With
     Else
         'First call.
