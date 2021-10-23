@@ -170,26 +170,26 @@ Public Sub TurnOn( _
     Else
         'First call.
         'Store current settings in class holders before making changes.
+        This.Count = 1
         With Application
-            This.Count = 1
             This.CalculationMode = .Calculation
-            This.ScreenUpdate = .ScreenUpdating
-            ReDim This.EnableEvents(This.Count)
-            This.EnableEvents(This.Count) = .EnableEvents
             This.DisplayAlerts = .DisplayAlerts
             This.EnableAnimations = .EnableAnimations
+            ReDim This.EnableEvents(This.Count)
+            This.EnableEvents(This.Count) = .EnableEvents
+            This.ScreenUpdate = .ScreenUpdating
 'NOTE: The current state of `.Cursor` and `.EnableCancelKey` are not stored. Is that intended?
             
             HideDisplayPageBreaksOnAllSheets hideDisplayPageBreaks
             
             .Calculation = XlCalculation.xlCalculationManual
-            .ScreenUpdating = False
-            .EnableEvents = allowEvents
+            .Cursor = XlMousePointer.xlWait
             .DisplayAlerts = False
             .EnableAnimations = False
-            .Cursor = XlMousePointer.xlWait
-            SetStatusBar Message
             .EnableCancelKey = XlEnableCancelKey.xlErrorHandler
+            .EnableEvents = allowEvents
+            .ScreenUpdating = False
+            SetStatusBar Message
         End With
         This.IsRunning = True
     End If
@@ -206,17 +206,17 @@ Public Sub TurnOff()
             This.IsRunning = False
             With Application
                 .Calculation = This.CalculationMode
-                .ScreenUpdating = This.ScreenUpdate
-                .EnableEvents = This.EnableEvents(1)
+                'NOTE: Is it intentionally not restored?
+                .Cursor = xlDefault
                 .DisplayAlerts = This.DisplayAlerts
                 .EnableAnimations = This.EnableAnimations
-'NOTE: Is it intentionally not restored?
-                .Cursor = xlDefault
+                'NOTE: Is it intentionally not restored?
+                .EnableCancelKey = xlInterrupt
+                .EnableEvents = This.EnableEvents(1)
+                .ScreenUpdating = This.ScreenUpdate
                 If This.StatusBar = False Then
                     .StatusBar = False
                 End If
-'NOTE: Is it intentionally not restored?
-                .EnableCancelKey = xlInterrupt
             End With
         Case Is > 1                                          ' peal-off one layer.
             This.Count = This.Count - 1
@@ -239,16 +239,17 @@ Public Sub Reset()
     With Application
         This.Count = 0
         This.IsRunning = False
+
         .Calculation = Excel.XlCalculation.xlCalculationAutomatic
-        .ScreenUpdating = True
-        .EnableEvents = True
-        .DisplayAlerts = True
-        .EnableAnimations = True
-'NOTE: This key is not used anywhere else
+        'NOTE: This key is not used anywhere else
         .CalculateBeforeSave = True
         .Cursor = Excel.XlMousePointer.xlDefault
-        .StatusBar = False
+        .DisplayAlerts = True
+        .EnableAnimations = True
         .EnableCancelKey = Excel.XlEnableCancelKey.xlInterrupt
+        .EnableEvents = True
+        .ScreenUpdating = True
+        .StatusBar = False
     End With
 End Sub
 
