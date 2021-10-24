@@ -52,7 +52,7 @@ Private Type TXLSpeedUp
     EnableAnimations    As Boolean
     EnableEvents()      As Boolean
     IsRunning           As Boolean
-    ScreenUpdate        As Boolean
+    ScreenUpdating      As Boolean
     Silent              As Boolean
     StatusBar           As Boolean
 End Type
@@ -86,7 +86,7 @@ Public Sub DisplayApplicationSettings()
     
     With Application
         Message = "CalculationMode:= " & .Calculation & Message & vbCrLf & _
-                "ScreenUpdate:= " & .ScreenUpdating & vbCrLf & _
+                "ScreenUpdating:= " & .ScreenUpdating & vbCrLf & _
                 "EnableEvents:= " & .EnableEvents & vbCrLf & _
                 "DisplayAlerts:= " & .DisplayAlerts & vbCrLf & _
                 "EnableAnimations:= " & .EnableAnimations
@@ -178,7 +178,7 @@ Public Sub TurnOn( _
             This.EnableAnimations = .EnableAnimations
             ReDim This.EnableEvents(This.Count)
             This.EnableEvents(This.Count) = .EnableEvents
-            This.ScreenUpdate = .ScreenUpdating
+            This.ScreenUpdating = .ScreenUpdating
 'NOTE: The current state of `.Cursor` and `.EnableCancelKey` are not stored. Is that intended?
             
             HideDisplayPageBreaksOnAllSheets hideDisplayPageBreaks
@@ -214,7 +214,7 @@ Public Sub TurnOff()
                 'NOTE: Is it intentionally not restored?
                 .EnableCancelKey = xlInterrupt
                 .EnableEvents = This.EnableEvents(1)
-                .ScreenUpdating = This.ScreenUpdate
+                .ScreenUpdating = This.ScreenUpdating
                 If This.StatusBar = False Then
                     .StatusBar = False
                 End If
@@ -240,7 +240,7 @@ Public Sub Reset()
     With Application
         This.Count = 0
         This.IsRunning = False
-
+        
         .Calculation = XlCalculation.xlCalculationAutomatic
         'NOTE: This key is not used anywhere else
         .CalculateBeforeSave = True
@@ -274,7 +274,7 @@ Public Property Get ToString( _
                 "IsRunning:= " & This.IsRunning & vbCrLf & _
                 "Count:= " & This.Count & vbCrLf & _
                 "CalculationMode:= " & .Calculation & ToString & vbCrLf & _
-                "ScreenUpdate:= " & .ScreenUpdating & vbCrLf & _
+                "ScreenUpdating:= " & .ScreenUpdating & vbCrLf & _
                 "EnableEvents(" & Me.Count & "):= " & .EnableEvents & vbCrLf & _
                 "DisplayAlerts:= " & .DisplayAlerts & vbCrLf & _
                 "EnableAnimations:= " & .EnableAnimations
