@@ -73,23 +73,16 @@ End Property
 '@Description("Displays current Excel/Application settings.")
 Public Sub DisplayApplicationSettings()
 
-    Dim Message As String
-    
-    Select Case Application.Calculation
-        Case XlCalculation.xlCalculationAutomatic
-            Message = " (Automatic)"
-        Case XlCalculation.xlCalculationManual
-            Message = " (Manual)"
-        Case XlCalculation.xlCalculationSemiautomatic
-            Message = " (Semi-Automatic)"
-    End Select
+    Dim CalculationMode As String
+    CalculationMode = GetCalculationMode
     
     With Application
-            Message = "CalculationMode:= " & .Calculation & Message & vbCrLf & _
-                    "ScreenUpdating:= " & .ScreenUpdating & vbCrLf & _
-                    "EnableEvents:= " & .EnableEvents & vbCrLf & _
-                    "DisplayAlerts:= " & .DisplayAlerts & vbCrLf & _
-                    "EnableAnimations:= " & .EnableAnimations
+        Dim Message As String
+        Message = "CalculationMode:= " & .Calculation & CalculationMode & vbCrLf & _
+                "ScreenUpdating:= " & .ScreenUpdating & vbCrLf & _
+                "EnableEvents:= " & .EnableEvents & vbCrLf & _
+                "DisplayAlerts:= " & .DisplayAlerts & vbCrLf & _
+                "EnableAnimations:= " & .EnableAnimations
     End With
     
     MsgBox Message, vbInformation, "SpeedUp | Current Application Settings"
@@ -259,20 +252,14 @@ Public Property Get ToString( _
     Optional ByVal returnAsSingleLine As Boolean = True _
 ) As String
 
-    Select Case Application.Calculation
-        Case XlCalculation.xlCalculationAutomatic
-            ToString = " (Automatic)"
-        Case XlCalculation.xlCalculationManual
-            ToString = " (Manual)"
-        Case XlCalculation.xlCalculationSemiautomatic
-            ToString = " (Semi-Automatic)"
-    End Select
+    Dim CalculationMode As String
+    CalculationMode = GetCalculationMode
     
     With Application
         ToString = _
                 "IsRunning:= " & This.IsRunning & vbCrLf & _
                 "Count:= " & This.Count & vbCrLf & _
-                "CalculationMode:= " & .Calculation & ToString & vbCrLf & _
+                "CalculationMode:= " & .Calculation & CalculationMode & vbCrLf & _
                 "ScreenUpdating:= " & .ScreenUpdating & vbCrLf & _
                 "EnableEvents(" & Me.Count & "):= " & .EnableEvents & vbCrLf & _
                 "DisplayAlerts:= " & .DisplayAlerts & vbCrLf & _
@@ -291,6 +278,19 @@ Private Sub Class_Initialize()
     This.Silent = True
     ShowMessage "|> Initializing:= " & Me.Name
 End Sub
+
+
+'@Description("Get the current Application.Calculation setting.")
+Private Function GetCalculationMode() As String
+    Select Case Application.Calculation
+        Case XlCalculation.xlCalculationAutomatic
+            GetCalculationMode = " (Automatic)"
+        Case XlCalculation.xlCalculationManual
+            GetCalculationMode = " (Manual)"
+        Case XlCalculation.xlCalculationSemiautomatic
+            GetCalculationMode = " (Semi-Automatic)"
+    End Select
+End Function
 
 
 '@Description("Eventually sets a StatusBar message.")
