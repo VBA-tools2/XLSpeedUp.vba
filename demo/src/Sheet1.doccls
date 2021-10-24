@@ -1,0 +1,10 @@
+﻿
+Option Explicit
+
+Private Sub cmdSpeedUpDemo_Click()
+    Normal_vs_SpeedUp_Example
+End Sub
+
+Private Sub cmdSpeedUpReset_Click()
+    SpeedUp_Reset_Example
+End Sub
