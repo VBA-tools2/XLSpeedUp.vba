@@ -46,7 +46,7 @@ Private Const C_NAME    As String = "XLSpeedUp.cls"
 ' Private Variables
 '==========================================================================================================================
 Private Type TXLSpeedUp
-    CalculationMode     As Excel.XlCalculation
+    CalculationMode     As XlCalculation
     Count               As Byte
     DisplayAlerts       As Boolean
     EnableAnimations    As Boolean
@@ -63,7 +63,7 @@ Private This As TXLSpeedUp
 Public Property Get About() As String
     
     About = "ChE Junkie VBA SpeedUp class module for Excel, " & Me.Version & _
-            "." & VBA.vbCrLf & VBA.vbCrLf
+            "." & vbCrLf & vbCrLf
     About = About & "For additional details see  " & _
             "<https://chejunkie.com/knowledge-base/speed-up-class-excel-vba/>"
     
@@ -85,10 +85,10 @@ Public Sub DisplayApplicationSettings()
     End Select
     
     With Application
-        Message = "CalculationMode:= " & .Calculation & Message & VBA.vbCrLf & _
-                "ScreenUpdate:= " & .ScreenUpdating & VBA.vbCrLf & _
-                "EnableEvents:= " & .EnableEvents & VBA.vbCrLf & _
-                "DisplayAlerts:= " & .DisplayAlerts & VBA.vbCrLf & _
+        Message = "CalculationMode:= " & .Calculation & Message & vbCrLf & _
+                "ScreenUpdate:= " & .ScreenUpdating & vbCrLf & _
+                "EnableEvents:= " & .EnableEvents & vbCrLf & _
+                "DisplayAlerts:= " & .DisplayAlerts & vbCrLf & _
                 "EnableAnimations:= " & .EnableAnimations
     End With
     
@@ -99,7 +99,7 @@ End Sub
 
 '@Description("Displays current SpeedUp/Excel settings.")
 Public Sub DisplayCurrentSettings()
-    VBA.MsgBox _
+    MsgBox _
             Me.ToString(returnAsSingleLine:=False), _
             vbInformation + vbOKOnly, _
             "SpeedUp | Current Settings"
@@ -241,13 +241,13 @@ Public Sub Reset()
         This.Count = 0
         This.IsRunning = False
 
-        .Calculation = Excel.XlCalculation.xlCalculationAutomatic
+        .Calculation = XlCalculation.xlCalculationAutomatic
         'NOTE: This key is not used anywhere else
         .CalculateBeforeSave = True
-        .Cursor = Excel.XlMousePointer.xlDefault
+        .Cursor = XlMousePointer.xlDefault
         .DisplayAlerts = True
         .EnableAnimations = True
-        .EnableCancelKey = Excel.XlEnableCancelKey.xlInterrupt
+        .EnableCancelKey = XlEnableCancelKey.xlInterrupt
         .EnableEvents = True
         .ScreenUpdating = True
         .StatusBar = False
@@ -271,17 +271,17 @@ Public Property Get ToString( _
     
     With Application
         ToString = _
-                "IsRunning:= " & This.IsRunning & VBA.vbCrLf & _
-                "Count:= " & This.Count & VBA.vbCrLf & _
-                "CalculationMode:= " & .Calculation & ToString & VBA.vbCrLf & _
-                "ScreenUpdate:= " & .ScreenUpdating & VBA.vbCrLf & _
-                "EnableEvents(" & Me.Count & "):= " & .EnableEvents & VBA.vbCrLf & _
-                "DisplayAlerts:= " & .DisplayAlerts & VBA.vbCrLf & _
+                "IsRunning:= " & This.IsRunning & vbCrLf & _
+                "Count:= " & This.Count & vbCrLf & _
+                "CalculationMode:= " & .Calculation & ToString & vbCrLf & _
+                "ScreenUpdate:= " & .ScreenUpdating & vbCrLf & _
+                "EnableEvents(" & Me.Count & "):= " & .EnableEvents & vbCrLf & _
+                "DisplayAlerts:= " & .DisplayAlerts & vbCrLf & _
                 "EnableAnimations:= " & .EnableAnimations
     End With
     
     If returnAsSingleLine Then
-        ToString = VBA.Replace(ToString, VBA.vbCrLf, ", ")
+        ToString = Replace(ToString, vbCrLf, ", ")
     End If
     
 End Property
